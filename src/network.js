@@ -6,7 +6,7 @@ const rp = require("promise-request-retry");
 const fs = require("fs");
 
 // macros
-const VOTER_NUM = 3;
+const VOTER_NUM = 5;
 
 // local modules
 const Blockchain = require("./blockchain.js");
@@ -44,6 +44,8 @@ for (var i = 0; i < 157; i++) {
     else if (i == 4) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else if (i == 6) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else if (i == 8) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
+    else if (i ==10) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
+    else if (i ==12) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 0);
 }
 

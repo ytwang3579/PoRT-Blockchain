@@ -459,6 +459,7 @@ MPT.prototype.UpdateDbit = function (key, dbit = 0) {
         }
     } else if (this.mode == 'extension') {
         var i = 0;
+        //console.log(key[i],this.key[i]);
         while (key[i] == this.key[i]) {
             i++;
             if (i == this.key.length)

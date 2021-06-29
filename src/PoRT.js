@@ -9,6 +9,6 @@ function PoRT(address, MPT, dbit) {
     var tmp = sha256(T + this.address);
     var h = parseInt(tmp, 16) % T;
     this.next_maintainer = this.Tree.Select(h, 0, 0);
-    this.Tree.UpdateDbit(this.next_maintainer, this.dbit);
+    this.Tree.UpdateDbit(this.next_maintaicner.hex(), this.dbit);
 }
 module.exports = PoRT;
