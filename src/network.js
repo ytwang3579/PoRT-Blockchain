@@ -6,7 +6,7 @@ const rp = require("promise-request-retry");
 const fs = require("fs");
 
 // macros
-const VOTER_NUM = 3;
+const VOTER_NUM = 300;
 
 // local modules
 const Blockchain = require("./blockchain.js");
@@ -39,14 +39,11 @@ w = undefined;
 
 
 const Tree = new MPT(true);
-for (var i = 0; i < 157; i++) {
-    if (i == 2) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 1); // dbit == 1 means creator
-    else if (i == 4) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i == 6) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i == 8) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
+for (var i = 0; i < 305; i++) {
+    if (i == 1) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 1); // dbit == 1 means creator
+    else if (i <= 300) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 0);
 }
-
 const chain = new Blockchain(Tree);
 
 for (var i = 0, UpdateList = chain.chain[0].transactions; i < UpdateList.length; i++) {
