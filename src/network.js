@@ -698,7 +698,7 @@ app.get("/Creator", function (req, res) {
 
 app.post("/Voter", function (req, res) {
     const seq = req.body.SeqNum;
-
+    console.log("here in /Voter");
     if (seqList.indexOf(seq) == -1) {
         voter = new Voter(port, wallet, Tree);
         if (voter.IsValid()) {
@@ -748,10 +748,17 @@ app.post("/Creator/Challenge", function (req, res) {
 
     creator.GetVoter(VoterUrl, VoterPubKey, VoterPubV);
     
-
+    console.log("here in /Creator/Challenge");
+    console.log(creator.VoterUrl.length);
+    console.log(creator.VoterUrl[creator.VoterUrl.length-1]);
+    console.log(VOTER_NUM);
     if (creator.VoterUrl.length == VOTER_NUM) {
+    
+        console.log("start generating challenge");
         
         const challenge = creator.GenerateChallenge();
+        
+        console.log("Generate Challenge finish");
         
         const requestPromises = [];
         creator.VoterUrl.forEach(networkNodeUrl => {
@@ -774,6 +781,7 @@ app.post("/Creator/Challenge", function (req, res) {
 
 app.post("/Voter/Response", function (req, res) {
     const isBlockValid = voter.VerifyBlock(req.body.message.merkleRoot, voter.MPT);
+    console.log("here in /Voter/Response");
     if (isBlockValid) {
         const challenge = req.body.challenge;
         //console.log(challenge);
@@ -801,6 +809,8 @@ app.post("/Voter/Response", function (req, res) {
 app.post("/Creator/GetResponses", function (req, res) {
     const response = req.body.response;
     creator.GetResponses(response);
+    
+    console.log("here in /Creator/GetResponses");
 
     if (creator.VoterResponse.length == VOTER_NUM) {
         creator.AggregateResponse();
@@ -821,6 +831,8 @@ app.post("/Creator/GetResponses", function (req, res) {
 
 app.post("/Creator/GetBlock", function (req, res) {
     var seq = req.body.SeqNum;
+    
+    console.log("here in /Creator/GetBlock");
 
     if (seqList.indexOf(seq) == -1) {
         seqList.push(seq);

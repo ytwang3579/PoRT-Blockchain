@@ -57,15 +57,19 @@ Creator.prototype.GetVoter = function (VoterUrl, VoterPubKey, VoterPubV) {
         this.VoterPubKey.push(VoterPubKey);
         this.VoterPubV.push(VoterPubV);
     }
+    console.log("finish getting voter");
 }
 
 Creator.prototype.GenerateChallenge = function() {
     this.V0_aggr = this.VoterPubV[0];
+    
+    console.log(VoterPubV.length);
+    
     for(var i = 1; i < this.VoterPubV.length; i++) {
         this.V0_aggr = this.V0_aggr.add(this.VoterPubV[i]);
     }
-
-    // console.log("\nV0_aggr: " + this.V0_aggr.encode('hex'));
+    
+    console.log("\nV0_aggr: " + this.V0_aggr.encode('hex'));
 
     hash.update(this.V0_aggr.encode('hex') + this.block);
     this.challenge = new BN(hash.copy().digest('hex'), 'hex');

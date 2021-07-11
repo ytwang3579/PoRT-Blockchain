@@ -1,0 +1,14 @@
+
+> blockchain@1.0.0 3146 /home/szlee118/PoRT-Blockchain
+> nodemon --watch dev -e js src/network.js 3146 http://localhost:3146 &
+
+[33m[nodemon] 2.0.7[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): dev[39m
+[33m[nodemon] watching extensions: js[39m
+[32m[nodemon] starting `node src/network.js 3146 http://localhost:3146`[39m
+Listening on port 3146 ...
+here in /Voter
+here in /Voter
+here in /Voter
+here in /Voter
