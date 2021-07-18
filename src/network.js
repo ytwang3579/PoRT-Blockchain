@@ -39,7 +39,7 @@ w = undefined;
 
 
 const Tree = new MPT(true);
-for (var i = 0; i < 305; i++) {
+for (var i = 0; i < 306; i++) {
     if (i == 1) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 1); // dbit == 1 means creator
     else if (i <= 300) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 0);
@@ -700,8 +700,10 @@ app.post("/Voter", function (req, res) {
     const seq = req.body.SeqNum;
     console.log("here in /Voter");
     if (seqList.indexOf(seq) == -1) {
+        console.log("rule1",chain.currentNodeUrl);
         voter = new Voter(port, wallet, Tree);
         if (voter.IsValid()) {
+            console.log("rule2",chain.currentNodeUrl);
             voter.CreatorUrl(req.body.CreatorUrl);
 
             const requestPromises = [];
@@ -745,6 +747,8 @@ app.post("/Creator/Challenge", function (req, res) {
 
     const VoterPubKey = wallet.PublicKeyFromHex(VoterPubKeyHex);
     const VoterPubV = wallet.PublicKeyFromHex(VoterPubVHex);
+    console.log("Here is voter URL");
+    console.log(VoterUrl);
 
     creator.GetVoter(VoterUrl, VoterPubKey, VoterPubV);
     

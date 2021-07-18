@@ -63,7 +63,7 @@ Creator.prototype.GetVoter = function (VoterUrl, VoterPubKey, VoterPubV) {
 Creator.prototype.GenerateChallenge = function() {
     this.V0_aggr = this.VoterPubV[0];
     
-    console.log(VoterPubV.length);
+    console.log(this.VoterPubV.length);
     
     for(var i = 1; i < this.VoterPubV.length; i++) {
         this.V0_aggr = this.V0_aggr.add(this.VoterPubV[i]);
