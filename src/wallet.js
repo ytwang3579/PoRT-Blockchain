@@ -138,7 +138,7 @@ Wallet.prototype.ValidateAddress = function(address) {
 /**
  * Derive an instance according to the given path
  * @param  {string} path - absolute path for initializing instance
- * @return {Wallet} Create an wallet instance with key pairs
+ * @return {Wallet} Return an wallet instance with key pairs
  */
 Wallet.prototype.derive = function(path) {
     if (path === 'm' || path === 'M' || path === "m'" || path === "M'") {
@@ -171,6 +171,11 @@ Wallet.prototype.derive = function(path) {
     return wallet
 }
 
+/**
+ * Derive an new child node according to the index
+ * @param  {integer} index - the index of the child node 
+ * @return {Wallet} Return an child node instance with key pairs
+ */
 Wallet.prototype.deriveChild = function(index) {
 
     const isHardened = index > HARDENED_OFFSET
@@ -226,10 +231,13 @@ Wallet.prototype.deriveChild = function(index) {
     return wallet
 }
 
-Wallet.prototype.generateAddresses = function() {
-
-}
-
+/**
+ * Create a transaction
+ * @param  {id} string - the identity of transaction
+ * @param  {to} string - the address of receiver
+ * @param  {value} string - value to transfer
+ * @return {Wallet} Return a transaction object
+ */
 Wallet.prototype.createTransaction = function(id, to, value) {
     from = this.Address()
     
@@ -238,6 +246,9 @@ Wallet.prototype.createTransaction = function(id, to, value) {
     return tx
 }
 
+/**
+ * Show the wallet information
+ */
 Wallet.prototype.showInformation = function() {
     console.log('Private key: ' + this.privateKey)
     console.log('Public key : ' + this.publicKey)

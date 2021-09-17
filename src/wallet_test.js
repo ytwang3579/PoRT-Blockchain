@@ -1,4 +1,6 @@
 
+const args = process.argv.slice(2);
+
 const assert = require('assert')
 const bs58check = require('bs58check');
 
@@ -10,21 +12,86 @@ const path1 = 'm/123'
 const path2 = 'm/123/12'
 const path3 = 'm/123/12/1'
 
-const wallet = new Wallet(prk, puk);
+var wallet = new Wallet(prk, puk);
 
 wallet.showInformation()
 
 const publicKeyBefore = wallet.publicKey.toString('hex');
 
-const child = wallet.derive(path1)
+var child = wallet.derive(path1)
 assert.equal(wallet.publicKey.toString('hex'), publicKeyBefore)
 child.showInformation()
 
-const child2 = wallet.derive(path2)
+var child2 = wallet.derive(path2)
 child2.showInformation()
 
-const child3 = wallet.derive(path3)
+var child3 = wallet.derive(path3)
 child3.showInformation()
 
 tx = wallet.createTransaction('asdf', '1DVi9TDKYwtL5jDdepaqUaN7Dj4ZBht7gN', 0.2)
 console.log(tx)
+
+arguments_len = args.length
+
+// test creating a wallet with random keys
+if (args[0] == 'create_wallet') {
+
+    // system generates random key pairs
+    if (arguments_len === 1) {
+        wallet = new Wallet(prk, puk)
+        wallet.showInformation()
+
+    // system creates a wallet with given private key
+    } else if (arguments_len === 2) {
+        privateKey = args[1]
+        wallet = new Wallet(privateKey)
+        wallet.showInformation()
+    
+    // system creates a wallet with given private key and public key
+    } else if (arguments_len === 3) {
+        privateKey = args[1]
+        publicKey = args[2]
+        wallet = new Wallet(privateKey, publicKey)
+        wallet.showInformation()
+
+    // system got extra arguments
+    } else {
+        throw new Error('[Error] There are more than 3 arguments!')
+    }
+
+// test deriving wallet by path
+} else if (args[0] == 'derive_wallet') {
+
+    if (arguments_len === 1) {
+        wallet = new Wallet(path1)
+        child = wallet.derive(path)
+        child.showInformation()
+    } else {
+        path = args[1]
+        var isValidPath = true
+
+        entries = path.split('/')
+
+        entries.forEach(function(c, i) {
+            if (i > 0) {
+                if ((/^\d+$/.test(c)) === false) {
+                    isValidPath = false
+                }
+            }
+        })
+
+        if (isValidPath) {
+            wallet = new Wallet()
+            child = wallet.derive(path)
+            child.showInformation()
+        } else {
+            throw new Error('[Error] Given path is not valid, which contains invalid character!')
+        }
+    }
+
+// test creating transaction
+} else if (args[0] == 'create_tx') {
+    
+
+
+}
