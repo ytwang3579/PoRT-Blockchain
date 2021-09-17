@@ -1,0 +1,11 @@
+
+> blockchain@1.0.0 3000
+> nodemon --watch dev -e js src/network.js 3000 http://localhost:3000 &
+
+[33m[nodemon] 2.0.7[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): dev[39m
+[33m[nodemon] watching extensions: js[39m
+[32m[nodemon] starting `node src/network.js 3000 http://localhost:3000`[39m
+secp256k1 unavailable, reverting to browser version
+Listening on port 3000 ...
