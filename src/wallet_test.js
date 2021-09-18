@@ -14,22 +14,17 @@ const path3 = 'm/123/12/1'
 
 var wallet = new Wallet(prk, puk);
 
-wallet.showInformation()
+// wallet.showInformation()
 
-const publicKeyBefore = wallet.publicKey.toString('hex');
+// var child = wallet.derive(path1)
+// child.showInformation()
 
-var child = wallet.derive(path1)
-assert.equal(wallet.publicKey.toString('hex'), publicKeyBefore)
-child.showInformation()
+// var child2 = wallet.derive(path2)
+// child2.showInformation()
 
-var child2 = wallet.derive(path2)
-child2.showInformation()
+// var child3 = wallet.derive(path3)
+// child3.showInformation()
 
-var child3 = wallet.derive(path3)
-child3.showInformation()
-
-tx = wallet.createTransaction('asdf', '1DVi9TDKYwtL5jDdepaqUaN7Dj4ZBht7gN', 0.2)
-console.log(tx)
 
 arguments_len = args.length
 
@@ -63,8 +58,8 @@ if (args[0] == 'create_wallet') {
 } else if (args[0] == 'derive_wallet') {
 
     if (arguments_len === 1) {
-        wallet = new Wallet(path1)
-        child = wallet.derive(path)
+        wallet = new Wallet()
+        child = wallet.derive(path1)
         child.showInformation()
     } else {
         path = args[1]
@@ -91,7 +86,18 @@ if (args[0] == 'create_wallet') {
 
 // test creating transaction
 } else if (args[0] == 'create_tx') {
-    
 
+    if (arguments_len === 4) {
+        id = args[1]
+        to = args[2]
+        value = args[3]
+        
+        wallet = new Wallet()
 
+        tx = wallet.createTransaction(id, to, value)
+
+        console.log(tx)
+    } else {
+        throw new Error('[Error] There is no enough arguments to create a transaction')
+    }
 }

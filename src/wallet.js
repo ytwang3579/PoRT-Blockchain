@@ -37,7 +37,12 @@ function Wallet(prik='', pubk='') {
     } else if (prik == '' && pubk != '') {
         throw new Error('This is a public key only-provided wallet');
     } else {
-        this.privateKey = prik;
+        
+        if (prik.length == 64) {
+            this.privateKey = prik;
+        } else {
+            throw new Error('Given private key is wrong format');
+        }
 
         if (pubk.length == 130) {
             this.publicKey = Buffer.from(secp256k1.publicKeyCreate(Buffer.from(prik, 'hex'), true)).toString('hex');
