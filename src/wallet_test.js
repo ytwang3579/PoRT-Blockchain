@@ -98,6 +98,6 @@ if (args[0] == 'create_wallet') {
 
         console.log(tx)
     } else {
-        throw new Error('[Error] There is no enough arguments to create a transaction')
+        throw new Error('[Error] There is no enough arguments to create a transaction!')
     }
 }
