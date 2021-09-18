@@ -33,7 +33,7 @@ function Wallet(prik='', pubk='') {
         this.publicKey = keypair[1];
     } else if (prik != '' && pubk == '') {
         this.privateKey = prik;
-        this.publicKey = Buffer.from(secp256k1.publicKeyCreate(prik, true));
+        this.publicKey = Buffer.from(secp256k1.publicKeyCreate(Buffer.from(prik, 'hex'), true)).toString('hex');
     } else if (prik == '' && pubk != '') {
         throw new Error('This is a public key only-provided wallet');
     } else {
