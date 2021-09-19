@@ -4,6 +4,9 @@ const Transaction_MT = require("./transaction.js");
 
 function Pending_Transaction_Pool(tx = []) {
     this.transactions = tx;
+    this.pending_transactions = tx;
+    //this.queue_transactions = [];
+    //this.all_transactions = [];
 };
 
 Pending_Transaction_Pool.prototype.create = function(num) {
@@ -40,6 +43,50 @@ Pending_Transaction_Pool.prototype.get_transaction = function() {
 
 Pending_Transaction_Pool.prototype.get_num_of_transaction = function() {
     return this.transactions.length;
+}
+
+Pending_Transaction_Pool.prototype.repeat = (tx)=>{
+    this.pending_transactions.array.forEach(element => {
+        if(tx.id === element.id){
+            return true;
+        }
+    });
+    return false;
+}
+
+Pending_Transaction_Pool.prototype.validate = (tx) =>{
+    if(tx.value < 0){
+        return false;
+    }
+
+    return true;
+}
+
+Pending_Transaction_Pool.prototype.addTx = (tx)=>{
+    if(this.validate(tx) && !this.repeat(tx)){
+        this.pending_transactions.push(tx);
+    }
+
+    
+
+}
+
+Pending_Transaction_Pool.prototype.addTxs = (txs) =>{
+    txs.array.forEach(tx => {
+        this.addTx(tx);
+    });
+}
+
+Pending_Transaction_Pool.prototype.remove = (tx) =>{
+    this.pending_transactions.array.forEach((element, index) => {
+        if(tx.id === element.id){
+            this.pending_transactions.splice(index, 1);
+        }
+   });
+}
+
+Pending_Transaction_Pool.prototype.clear = () =>{
+    pending_transactions = [];
 }
 
 module.exports = Pending_Transaction_Pool;
