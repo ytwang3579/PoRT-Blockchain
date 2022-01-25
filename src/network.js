@@ -6,7 +6,7 @@ const rp = require("promise-request-retry");
 const fs = require("fs");
 
 // macros
-const VOTER_NUM = 5;
+const VOTER_NUM = 15;
 
 // local modules
 const Blockchain = require("./blockchain.js");
@@ -40,12 +40,8 @@ w = undefined;
 
 const Tree = new MPT(true);
 for (var i = 0; i < 157; i++) {
-    if (i == 2) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 1); // dbit == 1 means creator
-    else if (i == 4) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i == 6) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i == 8) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i ==10) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
-    else if (i ==12) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
+    if (i == 1) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 1); // dbit == 1 means creator
+    else if (i <= 15) Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 2); // dbit == 2 means voter
     else Tree.Insert(data[i][2], 1000, 1000 * 0.0001, 0);
 }
 
@@ -703,7 +699,7 @@ app.get("/Creator", function (req, res) {
 
 app.post("/Voter", function (req, res) {
     const seq = req.body.SeqNum;
-
+    console.log("here in /Voter");
     if (seqList.indexOf(seq) == -1) {
         voter = new Voter(port, wallet, Tree);
         if (voter.IsValid()) {
@@ -753,9 +749,14 @@ app.post("/Creator/Challenge", function (req, res) {
 
     creator.GetVoter(VoterUrl, VoterPubKey, VoterPubV);
     
-
+    console.log(creator.VoterUrl.length);
+    console.log(creator.VoterUrl[creator.VoterUrl.length-1]);
+    console.log(VOTER_NUM);
+    console.log("here in /Creator/Challenge");
     if (creator.VoterUrl.length == VOTER_NUM) {
         
+        console.log(creator.VoterUrl.length);
+        console.log(VOTER_NUM);
         const challenge = creator.GenerateChallenge();
         
         const requestPromises = [];
@@ -779,6 +780,7 @@ app.post("/Creator/Challenge", function (req, res) {
 
 app.post("/Voter/Response", function (req, res) {
     const isBlockValid = voter.VerifyBlock(req.body.message.merkleRoot, voter.MPT);
+    console.log("here in /Voter/Response");
     if (isBlockValid) {
         const challenge = req.body.challenge;
         //console.log(challenge);
@@ -806,6 +808,8 @@ app.post("/Voter/Response", function (req, res) {
 app.post("/Creator/GetResponses", function (req, res) {
     const response = req.body.response;
     creator.GetResponses(response);
+    
+    console.log("here in /Creator/GetResponses");
 
     if (creator.VoterResponse.length == VOTER_NUM) {
         creator.AggregateResponse();
@@ -826,6 +830,8 @@ app.post("/Creator/GetResponses", function (req, res) {
 
 app.post("/Creator/GetBlock", function (req, res) {
     var seq = req.body.SeqNum;
+    
+    console.log("here in /Creator/GetBlock");
 
     if (seqList.indexOf(seq) == -1) {
         seqList.push(seq);

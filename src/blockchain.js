@@ -1,4 +1,5 @@
 const currentNodeUrl = process.argv[3];
+const fs = require("fs");
 
 // local modules
 const Block = require('./block.js');
@@ -28,14 +29,22 @@ function Blockchain(MPT){
     var txn_pool = new Txn_Pool();
     txn_pool.create(1);
     var genesisBlock = new Block(4000718, txn_pool.transactions, '0xa3d2f1958efa84f053faf7eb14d2c104bef35b3098c23c5034678034c86ec183', MPT);
+
+    var data = fs.readFileSync('./data/node_address_mapping_table.csv')
+    .toString() // convert Buffer to string
+    .split('\n') // split string to lines
+    .map(e => e.trim()) // remove white spaces for each line
+    .map(e => e.split(',').map(e => e.trim())); // split each line to array
+
+
     genesisBlock.timestamp = 1604671786702;
     genesisBlock.hash = '0xa3d2f1958efa84f053faf7eb14d2c104bef35b3098c23c5034678034c86ec183';
     genesisBlock.nextCreator = '04bfde01a8a6973c4ece805f9a46f83d076a00e310e37351b50ee9a619838ce19e6dca73814b3557845140d0e97850487277b5a7ba87f26bd0cf9d943ce7623b9b';
-    genesisBlock.nextVoters = ['046fbf49bb8134c53d50595895283d4ce3b09473561219c6869ee2300af5481553e43d84d49837bd5a73fe6a3ab9337ef68532e1bf14ef83fb2d42eaa55c237680', 
-                               '0482c4b01761ab85fcabebbb1021e032ac58c62d184a80a588e7ba6d01928cb0402bb174b6e7e9ce7528630bc9963bf7643320365ab88ee6500ad3eb2f91e0efcd', 
-                               '0446a08e02df8950c6c5d1a1199747efab9fb5aadcdd79a95139f35bfbcf31f9ef8b116bad1012984521b6e7f07d1d8c67894d7d52880f894c93ff9c0aff439eb4',
-                               '0401d8c7ca7cb14196be6e39f9b14845b5e6144373d5721c05b1b269955d3861a7ecaa31ebff836770574c82497f00811f9d903f89e231bf61ca1bd961541db527',
-                               '04ede7370b728d35c23bf21bb9496131da34a481a6a64f76f0d6097799fa686b06ebb000176c8a2e92b8c6ae61a1eb7cbff806f778a38ff7f4ebc9569f39174a90'];
+
+    for (var i = 0; i < 157; i++) {
+        if (i == 2) genesisBlock.nextCreator = data[i][2]; // dbit == 1 means creator
+        else if (i <= 15) genesisBlock.nextVoters.push(data[i][2]); // dbit == 2 means voter
+    }
     this.chain.push(genesisBlock)   //create Genesis Block
 }
 
